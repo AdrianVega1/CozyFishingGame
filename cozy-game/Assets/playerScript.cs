@@ -121,10 +121,10 @@ public class playerScript : MonoBehaviour
     {
         switch (facingDirection)
         {
-            case "Left": return Vector3.left * (1 + extraBobberDistance);
-            case "Right": return Vector3.right * (1 + extraBobberDistance);
-            case "Up": return Vector3.up * (1 + extraBobberDistance);
-            case "Down": return Vector3.down * (1 + extraBobberDistance);
+            case "Left": return Vector3.left * 2;
+            case "Right": return Vector3.right * 2;
+            case "Up": return Vector3.up * 2;
+            case "Down": return Vector3.down * 2;
             default: return Vector3.zero;
         }
     }
