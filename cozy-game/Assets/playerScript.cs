@@ -9,13 +9,15 @@ public class playerScript : MonoBehaviour
     public Transform fishingPoint;
     public GameObject bobberPrefab;
 
-    public float moveSpeed = 2.5f;
+    public float moveSpeed = 1.5f;
     private Vector2 input;
     private string facingDirection = "Down"; // Default
 
     public float targetTime = 0.0f;
-    public float savedTargetTime = 0.0f;
-    public float extraBobberDistance = 5f;
+    public float savedTargetTime;
+    public float extraBobberDistance;
+
+    public GameObject fishGame;
 
     public float timeTillCatch = 0.0f;
     public bool winnerAnimation;
@@ -25,6 +27,7 @@ public class playerScript : MonoBehaviour
     void Start()
     {
         isFishing = false;
+        fishGame.SetActive(false);
         throwBobber = false;
         targetTime = 0.0f;
         savedTargetTime = 0.0f;
@@ -47,7 +50,7 @@ public class playerScript : MonoBehaviour
             timeTillCatch += Time.deltaTime;
             if (timeTillCatch >= 3)
             {
-                //fishGame.SetActive(true);
+                fishGame.SetActive(true);
             }
         }
 
@@ -56,8 +59,19 @@ public class playerScript : MonoBehaviour
             poleBack = false;
             isFishing = true;
             throwBobber = true;
-            extraBobberDistance += Mathf.Min(targetTime, 5f);
+
+            if (targetTime >= 3)
+            {
+                extraBobberDistance += 3;
+            }
+            else
+            {
+                extraBobberDistance += targetTime;
+            }
         }
+
+        Vector3 temp = new Vector3(extraBobberDistance, 0, 0);
+        fishingPoint.transform.position += temp;
 
         if (poleBack)
         {
@@ -74,6 +88,7 @@ public class playerScript : MonoBehaviour
                 fishingPoint.position = transform.position + offset;
 
                 Instantiate(bobberPrefab, fishingPoint.position, Quaternion.identity, transform);
+                fishingPoint.transform.position -= temp;
 
                 throwBobber = false;
                 targetTime = 0.0f;
@@ -143,6 +158,7 @@ public class playerScript : MonoBehaviour
 
     void ResetFishing()
     {
+        fishGame.SetActive(false);
         poleBack = false;
         throwBobber = false;
         isFishing = false;
