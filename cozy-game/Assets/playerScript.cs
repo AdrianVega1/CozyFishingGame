@@ -24,6 +24,8 @@ public class playerScript : MonoBehaviour
 
     private Rigidbody2D rb;
 
+    private bool isTouchingPiedras = false;
+
     void Start()
     {
         isFishing = false;
@@ -42,7 +44,15 @@ public class playerScript : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space) && !isFishing && !winnerAnimation)
         {
-            poleBack = true;
+            if (isTouchingPiedras)
+            {
+                poleBack = true;
+                Debug.Log("Fishing pole pulled back.");
+            }
+            else
+            {
+                Debug.Log("Can't fish: not touching piedras.");
+            }
         }
 
         if (isFishing)
@@ -56,17 +66,26 @@ public class playerScript : MonoBehaviour
 
         if (Input.GetKeyUp(KeyCode.Space) && !isFishing && !winnerAnimation)
         {
-            poleBack = false;
-            isFishing = true;
-            throwBobber = true;
-
-            if (targetTime >= 3)
+            if (isTouchingPiedras)
             {
-                extraBobberDistance += 3;
+                poleBack = false;
+                isFishing = true;
+                throwBobber = true;
+
+                if (targetTime >= 3)
+                {
+                    extraBobberDistance += 3;
+                }
+                else
+                {
+                    extraBobberDistance += targetTime;
+                }
+
+                Debug.Log("Fishing started.");
             }
             else
             {
-                extraBobberDistance += targetTime;
+                Debug.Log("Can't fish: not touching piedras.");
             }
         }
 
@@ -164,4 +183,21 @@ public class playerScript : MonoBehaviour
         isFishing = false;
         timeTillCatch = 0;
     }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Piedras"))
+        {
+            isTouchingPiedras = true;
+        }
+    }
+
+    void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Piedras"))
+        {
+            isTouchingPiedras = false;
+        }
+    }
+
 }
