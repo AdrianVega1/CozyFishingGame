@@ -25,7 +25,7 @@ public class bobberScript : MonoBehaviour
         }
         if (gameIsOver == true)
         {
-            Destroy(gameObject);
+            Destroy(gameObject, 0.5f);
         }
     }
 

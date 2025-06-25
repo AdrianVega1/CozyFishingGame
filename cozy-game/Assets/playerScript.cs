@@ -26,6 +26,8 @@ public class playerScript : MonoBehaviour
 
     private bool isTouchingPiedras = false;
 
+    public AudioSource splashSound;
+
     void Start()
     {
         isFishing = false;
@@ -72,7 +74,7 @@ public class playerScript : MonoBehaviour
                 isFishing = true;
                 throwBobber = true;
 
-                if (targetTime >= 3)
+                if (targetTime <= 3)
                 {
                     extraBobberDistance += 3;
                 }
@@ -101,6 +103,12 @@ public class playerScript : MonoBehaviour
                 fishingPoint.position = transform.position + offset;
 
                 Instantiate(bobberPrefab, fishingPoint.position, Quaternion.identity, transform);
+
+                if (splashSound != null)
+                {
+                    splashSound.Play();
+                }
+
                 fishingPoint.transform.position -= temp;
 
                 throwBobber = false;

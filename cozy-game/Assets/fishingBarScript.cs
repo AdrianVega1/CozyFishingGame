@@ -13,9 +13,19 @@ public class fishingBarScript : MonoBehaviour
     public playerScript playerS;
     public GameObject bobber;
 
+    public float topLimit = 2.04f;
+    public float bottomLimit = -1.5f;
+    public float moveSpeed = 4.0f;
+
+    void FixedUpdate()
+    {
+        // Limitar posici�n Y
+        /*float clampedY = Mathf.Clamp(transform.position.y, bottomLimit, topLimit);
+        rb.MovePosition(new Vector3(transform.position.x, clampedY, transform.position.z));*/
+    }
+
     void Start()
     {
-        
     }
 
     void Update()
@@ -31,7 +41,7 @@ public class fishingBarScript : MonoBehaviour
 
         if (targetTime <= 0.0f)
         {
-            transform.localPosition = new Vector3(-0.176f, -0.899f, 0);
+            transform.localPosition = new Vector3(-0.196f, -0.942f, 0);
             onFish = false;
             playerS.fishGameLossed();
             Destroy(GameObject.Find("bobber(Clone)"));
@@ -39,7 +49,7 @@ public class fishingBarScript : MonoBehaviour
         }
         if (targetTime >= 8.0f)
         {
-            transform.localPosition = new Vector3(-0.176f, -0.899f, 0);
+            transform.localPosition = new Vector3(-0.196f, -0.942f, 0);
             onFish = false;
             playerS.fishGameWon();
             Destroy(GameObject.Find("bobber(Clone)"));
@@ -145,10 +155,12 @@ public class fishingBarScript : MonoBehaviour
             p7.SetActive(true);
             p8.SetActive(true);
         }
-        if (Input.GetKey(KeyCode.Mouse0))
+        /*if (Input.GetKey(KeyCode.Mouse0))
         {
             rb.AddForce(Vector3.up, ForceMode.Impulse);
-        }
+        }*/
+        float verticalInput = Input.GetKey(KeyCode.Mouse0) ? 1 : -1;
+        rb.linearVelocity = new Vector3(0, verticalInput * moveSpeed, 0);
     }
 
     public void OnTriggerEnter(Collider other)
