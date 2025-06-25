@@ -80,12 +80,6 @@ public class playerScript : MonoBehaviour
                 {
                     extraBobberDistance += targetTime;
                 }
-
-                Debug.Log("Fishing started.");
-            }
-            else
-            {
-                Debug.Log("Can't fish: not touching piedras.");
             }
         }
 
